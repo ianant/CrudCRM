@@ -19,7 +19,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public List<Customer> getCustomers() {
 		
 		//create a session object
@@ -27,7 +26,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		
 		//create a hibernate query to fetch customer from database
-		Query query=session.createQuery("from Customer");
+		Query query=session.createQuery("from Customer order by firstName");
 		
 		
 		//store the result 
@@ -36,6 +35,24 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		//return result
 		return theCustomers;
+	}
+
+	@Override
+	public void saveCustomer(Customer theCustomer) {
+		
+		Session session=sessionFactory.getCurrentSession();
+		session.saveOrUpdate(theCustomer);
+		
+	}
+
+	@Override
+	public Customer getCustomer(int theID) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		
+		Customer theCustomer=session.get(Customer.class,theID);
+		
+		return theCustomer;
 	}
 
 }
